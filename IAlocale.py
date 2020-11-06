@@ -350,7 +350,7 @@ def Coeff(node):
     return mat[node.x][node.y]
 
 
-# Le code ci-dessous a été repris du td4
+# Le code ci-dessous a été repris de l'algorithme Min-max avec l'élaguage Alpha-Beta
 
 def Alpha_Beta_Search(node,profondeur):
    
