@@ -4,7 +4,13 @@ Created on Tue May  5 11:08:35 2020
 
 @author: Niels
 """
+# Dans la version ci-dessous, on joue sur un jeu de 6 lignes et 12 colonnes
+# L'intérêt est de réduire le nombre de matchs nuls en augmentant
+# les possibilités
 
+
+# L'IA implémentée tourne avec une profondeur 4, ce qui pourrait être 
+# augmenté, au détriment de la vitesse d'execution
 import time
 
 class Node:  # Initialisation d'un objet de la classe noeud
@@ -153,6 +159,7 @@ class Node:  # Initialisation d'un objet de la classe noeud
             return True
         
         #on regarde si les 42 jetons ont été joués, alors le jeu est fini
+        # On a défini une limite de 42coups, qui n'est pas dans les règles classiques
         var=0
         for i in range(6):
             for j in range(12):
