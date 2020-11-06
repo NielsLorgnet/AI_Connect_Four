@@ -5,13 +5,6 @@ Created on Tue May  5 11:08:35 2020
 @author: Niels
 """
 
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
-
-
-
-
 import time
 
 class Node:  # Initialisation d'un objet de la classe noeud
@@ -249,12 +242,12 @@ class Node:  # Initialisation d'un objet de la classe noeud
         utility=0
         
         if joueurLocalquiCommence==True:
-            utility=Coeff(self.parent.parent.parent.parent) 
+            utility=Coeff(self.parent.parent.parent) 
         # On regarde avec la fonction Coeff la position du coup joué et on attribue
         # une valeur utility en conséquence (on ne regarde que le coup joué avec une profondeur
         # de 1, c'est à dire le coup que l'IA va jouer parmi ceux possible)
         else:
-            utility-=Coeff(self.parent.parent.parent.parent)
+            utility-=Coeff(self.parent.parent.parent)
             
         # On utilise ici les heuristiques définies précédemment en attribuant les valeurs
         # correspondantes. On a décidé d'accorder des valeurs plus grandes pour les alignements
@@ -347,7 +340,9 @@ def Turn(node):  # on détermine quel camp doit jouer
         return value    
 
 
-# On attribue une valeur à un coup possible en foncion de la position du coup    
+# On attribue une valeur à un coup possible en foncion de la position du coup dans la grille
+# Plus le coup est centré, plus la valeur est grande. Cette heuristique est importante car
+# elle permet à l'IA de jouer un coup correct quand elle ne voit pas de coup important
 def Coeff(node):
     mat=[[0,1,2,3,4,5,5,4,3,2,1,0],[2,3,4,6,8,10,10,8,6,4,3,2],
          [5,6,8,10,12,14,14,12,10,8,6,5],[5,6,8,10,12,14,14,12,10,8,6,5],
@@ -425,7 +420,6 @@ def OrdivsOrdi():
        while i<len(node.liste) and found==False:
          
           if v==node.liste[i].eval:
-              #print("je pue")
               print("grille actuelle: ")
               print(node.liste[i])
               fin=time.time()
@@ -455,19 +449,17 @@ def HumainvsIA():  # L'adversaire de l'IA joue en premier
            found=False
            i=0
            debut=time.time()
-           v=Alpha_Beta_Search(node,5)
+           v=Alpha_Beta_Search(node,4)
            while i<len(node.liste) and found==False:
                if v==node.liste[i].eval:  # On cherche le meilleur coup
                    print("grille actuelle: ")
                    print(node.liste[i])
-                   #print(node.liste[i].eval)
+                   #print(node.liste[i].eval) Si on veut afficher l'évaluation de l'IA
                    print("Coup joué: colonne " + str(node.liste[i].y +1))
                    fin=time.time()
                    print("temps utilisé: " + str(fin-debut))
                    
-                   node=Node(node.liste[i].plateau,node.liste[i].profondeur)
-                   
-                   #print(node.x,node.y)
+                   node=Node(node.liste[i].plateau,node.liste[i].profondeur)                   
                    node.parent=None
                    found=True
                else:
@@ -484,10 +476,8 @@ def HumainvsIA():  # L'adversaire de l'IA joue en premier
            for i in range (6):
                if plat[i][ordonnee]=="" and (i==5 or plat[i+1][ordonnee]!=""):
                    plat[i][ordonnee]="x"
-           #print(Node(plat))
            node.action()  
            for i in node.liste:
-               #print(i)
                if i.plateau==plat:
                    node=i
                                     
@@ -513,7 +503,7 @@ def IAvsHumain():
                if v==node.liste[i].eval: # On cherche le meilleur coup
                    print("grille actuelle: ")
                    print(node.liste[i])
-                   #print(node.liste[i].eval)
+                   #print(node.liste[i].eval) Si on veut afficher l'évaluation de l'IA
                    print("Coup joué: colonne " + str(node.liste[i].y +1))
                    fin=time.time()
                    print("temps utilisé: " + str(fin-debut))
@@ -541,14 +531,13 @@ def IAvsHumain():
            for i in node.liste:
                
                if i.plateau==plat:
-                   node=i
-                  # print(node.x,node.y)                   
+                   node=i                 
                    node.parent=None
            print(node)  
        z+=1
        if node.IsTerminal():
            fini=True
-
+# Pour laisser l'IA commencer, joueurLocalquiCommence=True
 global joueurLocalquiCommence
 joueurLocalquiCommence=False
 if joueurLocalquiCommence==False:
